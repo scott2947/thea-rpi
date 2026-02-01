@@ -1,0 +1,13 @@
+[project]
+name = "thea-rpi"
+version = "0.1.0"
+description = "Robotics tool for object tracking using a RPI platform"
+authors = [{name = "Callum Scott", email = "scott2947.dev@gmail.com"}]
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

@@ -1,0 +1,4 @@
+.venv/
+thea-rpi.egg-info/
+__pycache__/
+playground/
