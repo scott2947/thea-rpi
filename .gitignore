@@ -1,4 +1,5 @@
 .venv/
-thea-rpi.egg-info/
+thea_rpi.egg-info/
 __pycache__/
 playground/
+config.py

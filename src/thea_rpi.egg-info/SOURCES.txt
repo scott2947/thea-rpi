@@ -1,9 +1,0 @@
-LICENSE
-README.md
-pyproject.toml
-src/thea-rpi/__init__.py
-src/thea-rpi/__main__.py
-src/thea_rpi.egg-info/PKG-INFO
-src/thea_rpi.egg-info/SOURCES.txt
-src/thea_rpi.egg-info/dependency_links.txt
-src/thea_rpi.egg-info/top_level.txt
