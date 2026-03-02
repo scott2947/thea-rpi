@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 import socket, struct
-from thea_rpi.config import SERVER_IP, PORT
+from thea_rpi.config import SERVER_IP, TCP_PORT, UDP_PORT
 
 
 class BaseClient(ABC):
@@ -47,8 +47,8 @@ class TCPClient(BaseClient):
 
     def start(self) -> None:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.connect((SERVER_IP, PORT))
-        print(f"TCP Client connected to {SERVER_IP}:{PORT}")
+        self.socket.connect((SERVER_IP, TCP_PORT))
+        print(f"TCP Client connected to {SERVER_IP}:{TCP_PORT}")
 
 
     def send(self, data: bytes) -> None:
@@ -105,7 +105,7 @@ class UDPClient(BaseClient):
 
     def start(self) -> None:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        print(f"UDP Client ready to send to {SERVER_IP}:{PORT}")
+        print(f"UDP Client ready to send to {SERVER_IP}:{UDP_PORT}")
 
 
     def send(self, data: bytes) -> None:
