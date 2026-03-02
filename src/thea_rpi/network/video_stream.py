@@ -36,5 +36,5 @@ class VideoSender:
 
 
 if __name__ == "__main__":
-    cam = VideoSender()
-    cam.stream()
+    vs = VideoSender()
+    vs.stream()
