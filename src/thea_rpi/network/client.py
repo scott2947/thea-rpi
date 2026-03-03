@@ -112,7 +112,7 @@ class UDPClient(BaseClient):
         if not self.socket:
             raise RuntimeError("Client not started. Call start() first")
 
-        self.socket.sendto(data, (SERVER_IP, PORT))
+        self.socket.sendto(data, (SERVER_IP, UDP_PORT))
 
     
     def receive(self) -> bytes:

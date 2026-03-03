@@ -21,6 +21,7 @@ class VideoSender:
             while True:
                 frame = self.camera.capture_array()
                 frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+                frame = cv2.flip(frame, 1)
                 result, encoded_img = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
 
                 if result:
