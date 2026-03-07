@@ -7,6 +7,16 @@ class VideoSender:
 
     def __init__(self):
         self.camera = Picamera2()
+        config = self.camera.create_video_configuration(main={"size": (640, 480)})
+        self.camera.configure(config)
+        self.camera.set_controls({
+                                     "AwbEnable": False,
+                                     "ColourGains": (1.393507719039917, 1.3565787076950073),
+                                     "AeEnable": False,
+                                     "ExposureTime": 59967,
+                                     "AnalogueGain": 1.0
+                                 })
+        
         self.client = UDPClient()
 
 
