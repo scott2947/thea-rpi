@@ -11,10 +11,10 @@ class VideoSender:
         self.camera.configure(config)
         self.camera.set_controls({
                                      "AwbEnable": False,
-                                     "ColourGains": (1.393507719039917, 1.3565787076950073),
+                                     "ColourGains": (1.3168779611587524, 1.4722663164138794),
                                      "AeEnable": False,
-                                     "ExposureTime": 59967,
-                                     "AnalogueGain": 1.0
+                                     "ExposureTime": 63835,
+                                     "AnalogueGain": 7.75
                                  })
         
         self.client = UDPClient()
