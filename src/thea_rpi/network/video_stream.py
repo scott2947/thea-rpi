@@ -7,6 +7,16 @@ class VideoSender:
 
     def __init__(self):
         self.camera = Picamera2()
+        config = self.camera.create_video_configuration(main={"size": (640, 480)})
+        self.camera.configure(config)
+        self.camera.set_controls({
+                                     "AwbEnable": False,
+                                     "ColourGains": (1.5364313125610352, 1.1490206718444824),
+                                     "AeEnable": False,
+                                     "ExposureTime": 10205,
+                                     "AnalogueGain": 2.0
+                                 })
+        
         self.client = UDPClient()
 
 
@@ -21,6 +31,7 @@ class VideoSender:
             while True:
                 frame = self.camera.capture_array()
                 frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+                frame = cv2.flip(frame, 1)
                 result, encoded_img = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
 
                 if result:
