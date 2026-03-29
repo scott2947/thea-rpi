@@ -1,34 +1,38 @@
 from picamera2 import Picamera2
-import cv2
+import cv2, time
 from thea_rpi.network.client import UDPClient
 
 
-class VideoSender:
-
+class FrameSender:
     def __init__(self):
         self.camera = Picamera2()
+        self.client = UDPClient()
+        self.running = False
+
+
+    def start(self) -> None:
         config = self.camera.create_video_configuration(main={"size": (640, 480)})
         self.camera.configure(config)
+        self.camera.start()
+
+        time.sleep(3)
+
+        meta = self.camera.capture_metadata()
         self.camera.set_controls({
                                      "AwbEnable": False,
-                                     "ColourGains": (1.5364313125610352, 1.1490206718444824),
+                                     "ColourGains": meta["ColourGains"],
                                      "AeEnable": False,
-                                     "ExposureTime": 10205,
-                                     "AnalogueGain": 2.0
+                                     "ExposureTime": meta["ExposureTime"],
+                                     "AnalogueGain": meta["AnalogueGain"]
                                  })
-        
-        self.client = UDPClient()
 
-
-    def stream(self) -> None:
-
-        self.camera.start()
         self.client.start()
+        self.running = True
 
-        print("Streaming started. Press Ctrl+C to stop")
 
-        try:
-            while True:
+    def run(self) -> None:
+        while self.running:
+            try:
                 frame = self.camera.capture_array()
                 frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
                 frame = cv2.flip(frame, 1)
@@ -36,16 +40,16 @@ class VideoSender:
 
                 if result:
                     self.client.send(encoded_img.tobytes())
+            
+            except Exception:
+                pass
 
-        except KeyboardInterrupt:
-            print("Streaming stopped by user")
-        except Exception as e:
-            print(f"Error during streaming: {e}")
-        finally:
-            self.camera.stop()
-            self.client.close()
+
+    def stop(self) -> None:
+        self.running = False
+        self.client.close()
+        self.camera.stop()
 
 
 if __name__ == "__main__":
-    vs = VideoSender()
-    vs.stream()
+    pass
