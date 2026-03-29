@@ -10,36 +10,22 @@ class FrameSender:
         self.running = False
 
 
-    def _tune(self) -> tuple[tuple[float, float], int, float]:
+    def start(self) -> None:
         config = self.camera.create_video_configuration(main={"size": (640, 480)})
         self.camera.configure(config)
-        
         self.camera.start()
 
         time.sleep(3)
 
         meta = self.camera.capture_metadata()
-
-        self.camera.stop()
-
-        return (meta["ColourGains"], meta["ExposureTime"], meta["AnalogueGain"])
-
-
-    def start(self) -> None:
-        controls = self._tune()
-
-        config = self.camera.create_video_configuration(main={"size": (640, 480)})
-        self.camera.configure(config)
-
         self.camera.set_controls({
                                      "AwbEnable": False,
-                                     "ColourGains": controls[0],
+                                     "ColourGains": meta["ColourGains"],
                                      "AeEnable": False,
-                                     "ExposureTime": controls[1],
-                                     "AnalogueGain": controls[2]
+                                     "ExposureTime": meta["ExposureTime"],
+                                     "AnalogueGain": meta["AnalogueGain"]
                                  })
 
-        self.camera.start()
         self.client.start()
         self.running = True
 
@@ -48,7 +34,7 @@ class FrameSender:
         while self.running:
             try:
                 frame = self.camera.capture_array()
-                frame = cv2.cvtColor(frame, cv2.COLOUR_RGB2BGR)
+                frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
                 frame = cv2.flip(frame, 1)
                 result, encoded_img = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
 
