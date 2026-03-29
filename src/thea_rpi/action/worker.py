@@ -4,13 +4,14 @@ from thea_rpi.action.base import BaseActor
 
 
 class ActionConsumer:
-    def __init__(self, command_queue: queue.Queue[np.ndarray], actor: BaseActor):
+    def __init__(self, command_queue: queue.Queue[dict], actor: BaseActor):
         self.command_queue = command_queue
         self.actor = actor
         self.running = False
 
 
     def start(self) -> None:
+        self.actor.start()
         self.running = True
 
 

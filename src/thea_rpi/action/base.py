@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class BaseActor(ABC):
     @abstractmethod
-    def act(self, command: str) -> None:
+    def act(self, command: dict) -> None:
         pass
 
 
