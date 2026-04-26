@@ -23,8 +23,6 @@ class HeadActor(BaseActor):
         self.hs.apply_delta(command[0], command[1])
         self._update()
 
-        print(command)
-
 
 if __name__ == "__main__":
     pass

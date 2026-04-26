@@ -1,5 +1,6 @@
 import queue, threading
 from thea_rpi.action.base import BaseActor
+from thea_rpi.network.client import TCPClient
 from thea_rpi.network.frame_worker import FrameSender
 from thea_rpi.network.command_worker import CommandProducer
 from thea_rpi.action.worker import ActionConsumer
@@ -12,9 +13,12 @@ class SplitPipeline:
 
 
     def start(self) -> None:
-        self.frame_sender = FrameSender()
+        send_event = threading.Event()
+        self.client = TCPClient()
+
         command_queue = queue.Queue(maxsize=30)
-        self.command_producer = CommandProducer(command_queue)
+        self.command_producer = CommandProducer(command_queue, send_event, self.client)
+        self.frame_sender = FrameSender(send_event, self.client)
         self.action_consumer = ActionConsumer(command_queue, self.actor)
 
         self.frame_sender_thread = threading.Thread(target=self.frame_sender.run, daemon=True)
@@ -23,8 +27,8 @@ class SplitPipeline:
 
 
     def run(self) -> None:
-        self.frame_sender.start()
         self.command_producer.start()
+        self.frame_sender.start()
         self.action_consumer.start()
 
         self.frame_sender_thread.start()
@@ -43,6 +47,7 @@ class SplitPipeline:
         self.frame_sender.stop()
         self.command_producer.stop()
         self.action_consumer.stop()
+        self.client.close()
 
 
 if __name__ == "__main__":
