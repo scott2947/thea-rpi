@@ -23,7 +23,6 @@ class SplitPipeline:
 
 
     def run(self) -> None:
-        print("Pipeline run triggered")
         self.frame_sender.start()
         self.command_producer.start()
         self.action_consumer.start()

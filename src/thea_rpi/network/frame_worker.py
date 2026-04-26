@@ -1,5 +1,5 @@
 from picamera2 import Picamera2
-import cv2, time
+import cv2, time, struct
 from thea_rpi.network.client import UDPClient
 
 
@@ -39,7 +39,8 @@ class FrameSender:
                 result, encoded_img = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
 
                 if result:
-                    self.client.send(encoded_img.tobytes())
+                    data = struct.pack('>d', time.time()) + encoded_img.tobytes()
+                    self.client.send(data)
             
             except Exception:
                 pass

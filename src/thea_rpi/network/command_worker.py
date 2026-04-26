@@ -1,9 +1,9 @@
-import queue, json
+import queue, struct
 from thea_rpi.network.client import TCPClient
 
 
 class CommandProducer:
-    def __init__(self, command_queue: queue.Queue[dict]):
+    def __init__(self, command_queue: queue.Queue[tuple]):
         self.command_queue = command_queue
         self.client = TCPClient()
         self.running = False
@@ -22,7 +22,7 @@ class CommandProducer:
                 data = self.client.receive_string()
                 if data:
                     try:
-                        command = json.loads(data)
+                        command = struct.unpack('>2f', data)
                         self.command_queue.put_nowait(command)
                     except queue.Full:
                         pass

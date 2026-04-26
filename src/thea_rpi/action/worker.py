@@ -4,7 +4,7 @@ from thea_rpi.action.base import BaseActor
 
 
 class ActionConsumer:
-    def __init__(self, command_queue: queue.Queue[dict], actor: BaseActor):
+    def __init__(self, command_queue: queue.Queue[tuple], actor: BaseActor):
         self.command_queue = command_queue
         self.actor = actor
         self.running = False
