@@ -11,8 +11,6 @@ class CommandProducer:
 
 
     def start(self) -> None:
-        self.client.start()
-        self.client.send_string("Client hello")
         self.running = True
 
 

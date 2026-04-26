@@ -1,7 +1,7 @@
 from thea_rpi.action.base import BaseActor
+from thea_rpi.templates import HeadState
 from thea_rpi.freenove.servo import Servo
 from thea_rpi.config import P_CNL, T_CNL
-from thea_rpi.templates import HeadState
 
 
 class HeadActor(BaseActor):

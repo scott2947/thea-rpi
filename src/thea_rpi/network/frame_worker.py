@@ -37,7 +37,7 @@ class FrameSender:
             frame = cv2.flip(frame, 1)
             result, encoded_img = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
             if result:
-                data = struct.pack('>d', time.time()) + encoded_img.tobytes()
+                data = struct.pack('>d', time.monotonic()) + encoded_img.tobytes()
                 self.client.send(data)
         except Exception:
             pass

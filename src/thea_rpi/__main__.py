@@ -3,6 +3,6 @@ from thea_rpi.action.head.actor import HeadActor
 
 
 if __name__ == "__main__":
-    spl = SplitPipeline("head", HeadActor())
+    spl = SplitPipeline("head-tracking", HeadActor())
+    spl.build()
     spl.start()
-    spl.run()

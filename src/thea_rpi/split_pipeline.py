@@ -12,13 +12,13 @@ class SplitPipeline:
         self.actor = actor
 
 
-    def start(self) -> None:
-        send_event = threading.Event()
+    def build(self) -> None:
         self.client = TCPClient()
 
+        send_event = threading.Event()
         command_queue = queue.Queue(maxsize=30)
-        self.command_producer = CommandProducer(command_queue, send_event, self.client)
         self.frame_sender = FrameSender(send_event, self.client)
+        self.command_producer = CommandProducer(command_queue, send_event, self.client)
         self.action_consumer = ActionConsumer(command_queue, self.actor)
 
         self.frame_sender_thread = threading.Thread(target=self.frame_sender.run, daemon=True)
@@ -26,9 +26,12 @@ class SplitPipeline:
         self.action_consumer_thread = threading.Thread(target=self.action_consumer.run, daemon=True)
 
 
-    def run(self) -> None:
-        self.command_producer.start()
+    def start(self) -> None:
+        self.client.start()
+        self.client.send_string("Client hello")
+        
         self.frame_sender.start()
+        self.command_producer.start()
         self.action_consumer.start()
 
         self.frame_sender_thread.start()
